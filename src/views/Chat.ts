@@ -232,8 +232,25 @@ export default class Chat extends Vue {
             );
           }
           break;
+        case INTENTS.GET_CITY:
+          if (temp) {
+            saveCity(temp)
+              .then(() => {
+                this.city = temp;
+                this.$store.dispatch("SAVE_DETAIL", {
+                  key: "city",
+                  value: this.city,
+                });
+                this.sendNextMessage();
+              })
+              .catch(() => this.conversation.pop());
+          } else {
+            await this.sleep(1000);
+            this.sendTextMessage(`Please enter valid city`, true, true);
+          }
+          break;
         case INTENTS.GET_CODE:
-          if (/^[a-zA-Z0-9]{8}$/.test(temp)) {
+          if (/^[a-zA-Z0-9]{12}$/.test(temp)) {
             saveUniquecode(temp)
               .then(() => {
                 this.uniqueCode = temp;
@@ -286,19 +303,19 @@ export default class Chat extends Vue {
   }
 
   private async optionSelected(value: any) {
-    switch (this.lastIntent) {
-      case INTENTS.GET_CITY:
-        saveCity(value.toLowerCase()).then(() => {
-          this.city = value;
-          this.$store.dispatch("SAVE_DETAIL", {
-            key: "city",
-            value: this.city,
-          });
-          this.conversation[this.conversation.length - 1].selected = value;
-          this.sendNextMessage();
-        });
-        break;
-    }
+    // switch (this.lastIntent) {
+    //   case INTENTS.GET_CITY:
+    //     saveCity(value.toLowerCase()).then(() => {
+    //       this.city = value;
+    //       this.$store.dispatch("SAVE_DETAIL", {
+    //         key: "city",
+    //         value: this.city,
+    //       });
+    //       this.conversation[this.conversation.length - 1].selected = value;
+    //       this.sendNextMessage();
+    //     });
+    //     break;
+    // }
   }
 
   private async sendNextMessage() {
@@ -328,12 +345,7 @@ export default class Chat extends Vue {
         if (this.name) {
           await this.sleep(sleepTime);
           this.sendTextMessage("Enter your city.");
-          this.sendDropdownMessage(
-            "നിങ്ങളുടെ നഗരത്തിന്‍റെ പേര് നൽകുക.",
-            STATES,
-            "",
-            "Select state"
-          );
+          this.sendTextMessage("നിങ്ങളുടെ നഗരത്തിന്‍റെ പേര് നൽകുക.", true);
           this.lastIntent = INTENTS.GET_CITY;
         }
         break;
