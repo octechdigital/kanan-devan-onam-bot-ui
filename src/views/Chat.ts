@@ -264,6 +264,7 @@ export default class Chat extends Vue {
               .catch(async (err) => {
                 if (err.messageId === ERROR_IDS.INVALID_UNIQUE_CODE) {
                   await this.sleep(1000);
+                  this.sendImageMessage("", "wrapper-code.jpeg");
                   this.sendTextMessage(
                     "Sorry you have entered an invalid code, please enter the unique code printed inside the pack as shown.",
                     true,
@@ -280,6 +281,7 @@ export default class Chat extends Vue {
               });
           } else {
             await this.sleep(1000);
+            this.sendImageMessage("", "wrapper-code.jpeg");
             this.sendTextMessage(
               "Sorry you have entered an invalid code, please enter the unique code printed inside the pack as shown.",
               true,
