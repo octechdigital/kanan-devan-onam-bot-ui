@@ -113,10 +113,19 @@ export const responseHelper = (response: any) => {
   }
 };
 
+export enum ERROR_IDS {
+  EXCEEDED_LIMIT = "exceededLimit",
+  INVALID_UNIQUE_CODE = "InvalidUniqueCode",
+  USED_UNIQUE_CODE = "UsedUniqueCode",
+}
 // Default catch function when API fails
 export const defaultCatch = (err: any) => {
   console.log(err);
-  const ignoreIds = ["InvalidUniqueCode"];
+  const ignoreIds = [
+    ERROR_IDS.EXCEEDED_LIMIT,
+    ERROR_IDS.INVALID_UNIQUE_CODE,
+    ERROR_IDS.USED_UNIQUE_CODE,
+  ];
   const { code, statusCode, message, messageId } = err;
   if (messageId && ignoreIds.includes(messageId)) {
     console.log(err);

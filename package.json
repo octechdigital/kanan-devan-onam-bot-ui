@@ -6,7 +6,9 @@
     "serve": "vue-cli-service serve",
     "build:dev": "vue-cli-service build --mode development",
     "build:prod": "vue-cli-service build --mode production",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy:dev": "npm run build:dev && rsync --verbose --recursive --progress dist/ bigcity-dev:/var/www/html/kanandevan-chatbot/",
+    "deploy:prod": "npm run build:prod && rsync --verbose --recursive --progress dist/ kduser@kd.bigcityexperience.com:/home/kduser/webapps/app-kd"
   },
   "dependencies": {
     "core-js": "^3.6.5",

@@ -10,6 +10,7 @@ import ThankYouMessage from "@/components/ThankYouMessage.vue";
 import { INTENTS, STATES } from "@/lib/consts";
 import { saveCity, saveMobile, saveName, saveUniquecode } from "@/api";
 import eventBus from "@/lib/event_bus";
+import { ERROR_IDS } from "@/api/utils";
 
 @Component({
   components: {
@@ -260,18 +261,22 @@ export default class Chat extends Vue {
                 });
                 this.sendNextMessage();
               })
-              .catch(async () => {
-                await this.sleep(1000);
-                this.sendTextMessage(
-                  "Sorry you have entered an invalid code, please enter the unique code printed inside the pack as shown.",
-                  true,
-                  true
-                );
-                this.sendTextMessage(
-                  "ക്ഷമിക്കണം, നിങ്ങൾ ഒരു അസാധുവായ കോഡ് നൽകി, പായ്ക്കിനുള്ളിൽ അച്ചടിച്ച യുണീക് കോഡ് കാണിച്ചിരിക്കുന്നതുപോലെ നൽകുക.",
-                  true,
-                  true
-                );
+              .catch(async (err) => {
+                if (err.messageId === ERROR_IDS.INVALID_UNIQUE_CODE) {
+                  await this.sleep(1000);
+                  this.sendTextMessage(
+                    "Sorry you have entered an invalid code, please enter the unique code printed inside the pack as shown.",
+                    true,
+                    true
+                  );
+                  this.sendTextMessage(
+                    "ക്ഷമിക്കണം, നിങ്ങൾ ഒരു അസാധുവായ കോഡ് നൽകി, പായ്ക്കിനുള്ളിൽ അച്ചടിച്ച യുണീക് കോഡ് കാണിച്ചിരിക്കുന്നതുപോലെ നൽകുക.",
+                    true,
+                    true
+                  );
+                } else {
+                  this.conversation.pop();
+                }
               });
           } else {
             await this.sleep(1000);
