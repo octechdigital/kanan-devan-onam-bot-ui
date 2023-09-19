@@ -2,9 +2,7 @@
   <div class="terms-and-condition">
     <p class="close-btn" @click="close">Close</p>
     <p dir="ltr" class="heading">Terms and Conditions</p>
-    <p>
-    Contest Details, Concept and Participation:
-</p>
+    <p>Contest Details, Concept and Participation:</p>
 <p>
     a.     These terms and conditions apply to the " Kanan Devan Veedu Vandi
     Swarnam Offer" programme for consumers who have purchased promotional
