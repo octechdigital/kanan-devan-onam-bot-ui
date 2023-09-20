@@ -33,6 +33,8 @@ export default class Chat extends Vue {
   private city = this.$store.getters.city;
   private uniqueCode = this.$store.getters.uniqueCode;
 
+  private showCodeExample = true;
+
   private get enableInput() {
     if (this.conversation.length > 0) {
       return (
@@ -264,7 +266,10 @@ export default class Chat extends Vue {
               .catch(async (err) => {
                 if (err.messageId === ERROR_IDS.INVALID_UNIQUE_CODE) {
                   await this.sleep(1000);
-                  this.sendImageMessage("", "wrapper-code.jpeg");
+                  if (this.showCodeExample) {
+                    this.sendImageMessage("", "wrapper-code.jpeg");
+                    this.showCodeExample = false;
+                  }
                   this.sendTextMessage(
                     "Sorry you have entered an invalid code, please enter the unique code printed inside the pack as shown.",
                     true,
@@ -275,13 +280,28 @@ export default class Chat extends Vue {
                     true,
                     true
                   );
+                } else if (err.messageId === ERROR_IDS.USED_UNIQUE_CODE) {
+                  await this.sleep(1000);
+                  this.sendTextMessage(
+                    "This unique code has been already used.",
+                    true,
+                    true
+                  );
+                  this.sendTextMessage(
+                    "ഈ യുണീക്  കോഡ് ഇതിനകം ഉപയോഗിച്ചു",
+                    true,
+                    true
+                  );
                 } else {
                   this.conversation.pop();
                 }
               });
           } else {
             await this.sleep(1000);
-            this.sendImageMessage("", "wrapper-code.jpeg");
+            if (this.showCodeExample) {
+              this.sendImageMessage("", "wrapper-code.jpeg");
+              this.showCodeExample = false;
+            }
             this.sendTextMessage(
               "Sorry you have entered an invalid code, please enter the unique code printed inside the pack as shown.",
               true,
