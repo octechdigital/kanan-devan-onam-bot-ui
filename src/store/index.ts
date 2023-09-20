@@ -27,7 +27,7 @@ export default new Vuex.Store({
   plugins: [
     createPersistedState({
       key: "kanan-devan-onam-contest",
-      storage: window.localStorage,
+      storage: window.sessionStorage,
       // paths: ["accessDetails", "userDetails"],
     }),
   ],
